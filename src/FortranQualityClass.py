@@ -3,10 +3,8 @@
 from argparse import ArgumentParser, HelpFormatter
 from FileAnalyzer import FileAnalyzer
 
-import os
-import re
 import pathlib
-
+import glob
 
 class FortranQuality:
     def __init__(self):
@@ -26,17 +24,10 @@ class FortranQuality:
         self.analyzeFiles()
 
     def analyzeFiles(self):
-
-        for root, directories, files in os.walk(self.path):
-
-            for file in files:
-
-                filepath = root + "/" + file
-
-                if re.search(r".F90$", filepath):
-
-                    fileAnalyzer = FileAnalyzer(filepath)
-                    fileAnalyzer.analyze()
+        # TODO python>=3.10; glob supports a root_dir argument
+        for filepath in glob.iglob(str(self.path)+"/**/*.F90", recursive=True):
+            fileAnalyzer = FileAnalyzer(filepath)
+            fileAnalyzer.analyze()
 
     def setUpInputParser(self):
 
@@ -53,7 +44,7 @@ class FortranQuality:
 
     def printHeader(self):
 
-        print("\n{}\n(C) {}, {}".format(self.name, self.author, self.year))
+        print(f"\n{self.name}\n(C) {self.author}, {self.year}")
 
     def setUpPath(self):
 
@@ -67,4 +58,4 @@ class FortranQuality:
 
     def printPath(self):
 
-        print("\n{} {}\n".format("Will analyze Fortran files in directory", self.path))
+        print(f"\nWill analyze Fortran files in directory {self.path}\n"

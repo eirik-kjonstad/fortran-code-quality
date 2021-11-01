@@ -1,10 +1,11 @@
 # -*- coding: UTF-8 -*-
 
-from argparse import ArgumentParser, HelpFormatter
+from argparse import ArgumentParser
 from FileAnalyzer import FileAnalyzer
 
 import pathlib
 import glob
+
 
 class FortranQuality:
     def __init__(self):
@@ -58,4 +59,4 @@ class FortranQuality:
 
     def printPath(self):
 
-        print(f"\nWill analyze Fortran files in directory {self.path}\n"
+        print(f"\nWill analyze Fortran files in directory {self.path}\n")

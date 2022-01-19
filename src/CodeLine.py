@@ -56,9 +56,16 @@ class CodeLine:
 
         rstrippedLine = self.lineString.rstrip()
 
-        if self.isComment() or len(rstrippedLine) == 0:
+        if self.isComment() or self.isEmpty():
             return False 
-        elif rstrippedLine[len(rstrippedLine) - 1] == "&": 
+        elif re.search('&', self.lineString): 
             return True
         else:
-            return False        
+            return False   
+
+    def isEmpty(self):
+        if len(self.lineString.strip()) == 0:
+            return True 
+        else: 
+            return False 
+

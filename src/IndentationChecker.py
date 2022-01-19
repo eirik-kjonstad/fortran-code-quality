@@ -13,7 +13,7 @@ class IndentationChecker:
 
         codeline = CodeLine(line)
 
-        if codeline.isComment():
+        if codeline.isComment() or len(line.lstrip()) == 0:
             return
 
         if self.continuedLine:

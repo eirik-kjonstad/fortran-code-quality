@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 import re
 from Routine import Routine
+from IndentationChecker import IndentationChecker
 import ntpath
 
 
@@ -10,6 +11,7 @@ class FileAnalyzer:
         self.name = ntpath.basename(filepath)
         self.file = open(filepath)
         self.lines = self.file.readlines()
+        self.indenter = IndentationChecker()
 
     def analyze(self):
 
@@ -17,6 +19,8 @@ class FileAnalyzer:
         print("File: {}\n".format(self.name))
 
         for line in self.lines:
+
+            self.indenter.check(line)
 
             routineDeclaration = re.match(
                 r".*\s*(subroutine|function)\s+(\w+)\s*\(", line

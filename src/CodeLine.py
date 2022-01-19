@@ -4,6 +4,8 @@ import re
 class CodeLine:
     def __init__(self, lineString):
 
+        self.indentation = len(lineString) - len(lineString.lstrip(' '))
+
         self.lineString = lineString.strip()
 
     def isComment(self):
@@ -49,3 +51,14 @@ class CodeLine:
         else:
 
             return False
+
+    def hasContinuation(self):
+
+        rstrippedLine = self.lineString.rstrip()
+
+        if self.isComment() or len(rstrippedLine) == 0:
+            return False 
+        elif rstrippedLine[len(rstrippedLine) - 1] == "&": 
+            return True
+        else:
+            return False        

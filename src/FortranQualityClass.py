@@ -26,9 +26,11 @@ class FortranQuality:
 
     def analyzeFiles(self):
         # TODO python>=3.10; glob supports a root_dir argument
-        for filepath in glob.iglob(str(self.path)+"/**/*.F90", recursive=True):
-            fileAnalyzer = FileAnalyzer(filepath)
-            fileAnalyzer.analyze()
+        suffixes = ["f90", "F90", "f95", "F95", "f03", "F03", "f08", "F08", "f18", "F18"]
+        for suffix in suffixes:
+            for filepath in glob.iglob(str(self.path)+"/**/*."+suffix, recursive=True):
+                fileAnalyzer = FileAnalyzer(filepath)
+                fileAnalyzer.analyze()
 
     def setUpInputParser(self):
 

@@ -16,7 +16,7 @@ class FileAnalyzer:
     def analyze(self):
 
         lineNumber = 0
-        print("File: {}\n".format(self.name))
+        print(f"File: {self.name}\n")
 
         for line in self.lines:
 

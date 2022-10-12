@@ -1,3 +1,6 @@
+import sys
+
+
 class ErrorMessage:
     def __init__(self, lineNumber, messageCore, *additionalLines):
         self.indent = 2
@@ -7,7 +10,7 @@ class ErrorMessage:
             self.message += f"\n{(self.indent+2)*' '}{i}"
 
     def __str__(self):
-        return f"{(self.indent)*' '}- Error in {self.lineNumber}: {self.message}"
+        return f"{(self.indent)*' '}- Error in line {self.lineNumber}: {self.message}"
 
 
 class ErrorTracker:
@@ -42,3 +45,5 @@ class ErrorTracker:
 
         if counter == 0:
             print("No errors found!")
+        else:
+            sys.exit(1)

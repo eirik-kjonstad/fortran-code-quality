@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 import re
+from ErrorHandling import ErrorMessage
 from Routine import Routine
 from IndentationChecker import IndentationChecker
 
@@ -33,5 +34,14 @@ class FileAnalyzer:
 
         kind = routineDeclaration.group(1)
         name = routineDeclaration.group(2)
+
+        if self.lines[lineNumber].strip().startswith("!"):
+            error = ErrorMessage(
+                lineNumber,
+                f"{kind.capitalize()} '{name}' appears to be commented out.",
+            )
+            ErrorTracker.addError(error)
+            return
+
         routine = Routine(self.lines[lineNumber:], name, kind, lineNumber)
         routine.runQualityChecks(ErrorTracker)

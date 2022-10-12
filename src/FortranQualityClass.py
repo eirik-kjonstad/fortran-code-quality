@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
-
 from FileAnalyzer import FileAnalyzer
 from pathlib import Path
+from ErrorHandling import ErrorTracker
 
 
 class FortranQuality:
@@ -26,10 +26,15 @@ class FortranQuality:
         suffixes = [suffix.upper() for suffix in lowercase_suffixes]
         suffixes.extend(lowercase_suffixes)
 
+        Errors = ErrorTracker()
+
         for suffix in suffixes:
             for filepath in self.path.glob(f"**/*.{suffix}"):
+                Errors.addFile(filepath.name)
                 fileAnalyzer = FileAnalyzer(filepath)
-                fileAnalyzer.analyze()
+                fileAnalyzer.analyze(Errors)
+
+        Errors.printSummary()
 
     def printHeader(self):
 

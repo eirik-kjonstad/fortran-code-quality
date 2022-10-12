@@ -2,23 +2,21 @@
 import re
 from Routine import Routine
 from IndentationChecker import IndentationChecker
-import ntpath
 
 
 class FileAnalyzer:
     def __init__(self, filepath):
 
-        self.name = ntpath.basename(filepath)
-        self.file = open(filepath)
-        self.lines = self.file.readlines()
+        self.name = filepath.name
+        with open(filepath) as file:
+            self.lines = file.readlines()
         self.indenter = IndentationChecker()
 
     def analyze(self):
 
-        lineNumber = 0
         print(f"File: {self.name}\n")
 
-        for line in self.lines:
+        for lineNumber, line in enumerate(self.lines):
 
             self.indenter.check(line)
 
@@ -28,8 +26,6 @@ class FileAnalyzer:
 
             if routineDeclaration:
                 self.analyzeRoutine(routineDeclaration, lineNumber)
-
-            lineNumber = lineNumber + 1
 
         print("")
 

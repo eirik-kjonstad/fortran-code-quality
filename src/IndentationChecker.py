@@ -3,9 +3,9 @@ from ErrorHandling import ErrorMessage
 
 
 class IndentationChecker:
-    def __init__(self, indent):
+    def __init__(self, indentLength):
 
-        self.indentLength = indent
+        self.indentLength = indentLength
         self.indentation = -1
         self.continuedLine = False
 

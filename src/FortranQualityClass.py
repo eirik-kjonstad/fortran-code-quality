@@ -5,14 +5,14 @@ from ErrorHandling import ErrorTracker
 
 
 class FortranQuality:
-    def __init__(self, path: Path, tab):
+    def __init__(self, path: Path, tabLength):
 
         self.name = "FortranQuality: a code-health tester for Fortran"
         self.author = "Eirik F. Kjønstad"
         self.year = 2021
 
         self.path = path
-        self.tab = tab
+        self.tabLength = tabLength
 
         self.printHeader()
         self.printPath()
@@ -32,7 +32,7 @@ class FortranQuality:
         for suffix in suffixes:
             for filepath in self.path.glob(f"**/*.{suffix}"):
                 Errors.addFile(filepath.name)
-                fileAnalyzer = FileAnalyzer(filepath, self.tab)
+                fileAnalyzer = FileAnalyzer(filepath, self.tabLength)
                 fileAnalyzer.analyze(Errors)
 
         Errors.printSummary()

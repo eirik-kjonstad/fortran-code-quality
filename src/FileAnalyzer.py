@@ -6,12 +6,12 @@ from IndentationChecker import IndentationChecker
 
 
 class FileAnalyzer:
-    def __init__(self, filepath, indent):
+    def __init__(self, filepath, tabLength):
 
         self.name = filepath.name
         with open(filepath) as file:
             self.lines = file.readlines()
-        self.indenter = IndentationChecker(indent)
+        self.indenter = IndentationChecker(tabLength)
 
     def analyze(self, ErrorTracker):
 

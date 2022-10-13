@@ -19,7 +19,7 @@ class FileAnalyzer:
 
         for lineNumber, line in enumerate(self.lines):
 
-            self.indenter.check(line, lineNumber, ErrorTracker)
+            self.indenter.check(line, lineNumber + 1, ErrorTracker)
 
             routineDeclaration = re.match(
                 r".*\s*(subroutine|function)\s+(\w+)\s*\(", line

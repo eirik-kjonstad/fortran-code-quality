@@ -40,9 +40,6 @@ class IndentationChecker:
                 error = ErrorMessage(
                     lineNumber,
                     f"'{codeline.lineString}' has unexpected indentation!",
-                    f"Indentation: {codeline.indentation}   Expected: {self.indentLength}",
+                    f"Indentation: {codeline.indentation}   Expected: {self.indentation}",
                 )
                 ErrorTracker.addError(error)
-
-        if codeline.hasContinuation():
-            self.continuedLine = True

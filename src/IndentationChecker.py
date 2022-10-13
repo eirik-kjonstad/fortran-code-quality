@@ -3,9 +3,9 @@ from ErrorHandling import ErrorMessage
 
 
 class IndentationChecker:
-    def __init__(self):
+    def __init__(self, indent):
 
-        self.indentLength = -1
+        self.indentLength = indent
         self.indentation = -1
         self.continuedLine = False
 
@@ -21,10 +21,11 @@ class IndentationChecker:
                 self.continuedLine = False
             return
 
+        if codeline.hasContinuation():
+            self.continuedLine = True
+
         if self.indentation == -1:
             self.indentation = codeline.indentation
-        elif self.indentLength == -1:
-            self.indentLength = codeline.indentation - self.indentation
         else:
             if codeline.indentation == self.indentation:
                 self.indentation = codeline.indentation
@@ -37,9 +38,14 @@ class IndentationChecker:
             elif codeline.indentation == self.indentation - 2 * self.indentLength:
                 self.indentation = self.indentation - self.indentLength
             else:
+                expectation = [
+                    self.indentation + i * self.indentLength
+                    for i in range(-2, 2)
+                    if self.indentation + i * self.indentLength >= 0
+                ]
                 error = ErrorMessage(
                     lineNumber,
                     f"'{codeline.lineString}' has unexpected indentation!",
-                    f"Indentation: {codeline.indentation}   Expected: {self.indentation}",
+                    f"Indentation: {codeline.indentation}   Expected: {expectation}",
                 )
                 ErrorTracker.addError(error)

@@ -20,6 +20,13 @@ def parse_input():
         ),
     )
 
+    inputParser.add_argument(
+        "--tab",
+        help=("Default tab length in the code."),
+        type=int,
+        default=3,
+    )
+
     return inputParser.parse_args()
 
 
@@ -43,7 +50,7 @@ def main():
 
     args = parse_input()
     path = setUpPath(args)
-    program = FortranQuality(path)
+    program = FortranQuality(path, args.tab)
     program.run()
 
 

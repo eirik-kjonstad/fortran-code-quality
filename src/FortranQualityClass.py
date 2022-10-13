@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 from FileAnalyzer import FileAnalyzer
 from pathlib import Path
 from ErrorHandling import ErrorTracker
@@ -8,7 +7,6 @@ class FortranQuality:
     def __init__(self, path: Path, tabLength):
 
         self.name = "FortranQuality: a code-health tester for Fortran"
-        self.author = "Eirik F. Kjønstad"
         self.year = 2021
 
         self.path = path
@@ -39,8 +37,8 @@ class FortranQuality:
 
     def printHeader(self):
 
-        print(f"\n{self.name}\n(C) {self.author}, {self.year}")
+        print(f"{self.name}, {self.year}\n")
 
     def printPath(self):
 
-        print(f"\nWill analyze Fortran files in directory {self.path}\n")
+        print(f"Will analyze Fortran files in directory {self.path}\n")

@@ -1,16 +1,18 @@
 # -*- coding: UTF-8 -*-
-import re, sys
+import re
 from CodeLine import CodeLine
+from ErrorHandling import ErrorMessage
 
 
 class Routine:
-    def __init__(self, lines, name, kind):
+    def __init__(self, lines, name, kind, lineNumber):
 
         self.maxLength = 30
         self.maxParameters = 5
 
         self.name = name
         self.kind = kind
+        self.lineNumber = lineNumber
 
         self.setUpLines(lines)
         self.calculateLength()
@@ -31,10 +33,10 @@ class Routine:
                 self.lines = lines[0:endLine]
                 break
 
-    def runQualityChecks(self):
+    def runQualityChecks(self, ErrorTracker):
 
         self.testLength()
-        self.testImplicitNone()
+        self.testImplicitNone(ErrorTracker)
         self.testNumParameters()
         self.testParameterIntents()
 
@@ -72,17 +74,14 @@ class Routine:
                 )
             )
 
-    def testImplicitNone(self):
+    def testImplicitNone(self, ErrorTracker):
 
         if not self.hasImplicitNone():
-            print(
-                "      Error: {} {} {}".format(
-                    self.kind.capitalize(),
-                    self.name,
-                    "does not have an 'implicit none' statement!",
-                )
+            error = ErrorMessage(
+                self.lineNumber,
+                f"{self.kind.capitalize()} {self.name} does not have an 'implicit none' statement!",
             )
-            sys.exit(1)
+            ErrorTracker.addError(error)
 
     def hasImplicitNone(self):
 

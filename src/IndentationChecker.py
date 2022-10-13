@@ -1,15 +1,15 @@
 from CodeLine import CodeLine
-import sys
+from ErrorHandling import ErrorMessage
+
 
 class IndentationChecker:
+    def __init__(self, indentLength):
 
-    def __init__(self):
-
-        self.indentLength = -1
+        self.indentLength = indentLength
         self.indentation = -1
         self.continuedLine = False
 
-    def check(self, line):
+    def check(self, line, lineNumber, ErrorTracker):
 
         codeline = CodeLine(line)
 
@@ -21,10 +21,11 @@ class IndentationChecker:
                 self.continuedLine = False
             return
 
+        if codeline.hasContinuation():
+            self.continuedLine = True
+
         if self.indentation == -1:
             self.indentation = codeline.indentation
-        elif self.indentLength == -1:
-            self.indentLength = codeline.indentation - self.indentation         
         else:
             if codeline.indentation == self.indentation:
                 self.indentation = codeline.indentation
@@ -32,16 +33,19 @@ class IndentationChecker:
                 self.indentation = self.indentation + self.indentLength
             elif codeline.indentation == self.indentation - self.indentLength:
                 self.indentation = self.indentation - self.indentLength
-            elif codeline.indentation == self.indentation + 2*self.indentLength:
+            elif codeline.indentation == self.indentation + 2 * self.indentLength:
                 self.indentation = self.indentation + self.indentLength
-            elif codeline.indentation == self.indentation - 2*self.indentLength:
+            elif codeline.indentation == self.indentation - 2 * self.indentLength:
                 self.indentation = self.indentation - self.indentLength
             else:
-                print(f"Error: '{codeline.lineString}' has unexpected indentation!")
-                print(f"Current indentation:         {self.indentation}")
-                print(f"New indentation:             {codeline.indentation}")
-                print(f"Expected indentation length: {self.indentLength}")
-                sys.exit(1)
-
-        if codeline.hasContinuation():
-            self.continuedLine = True
+                expectation = [
+                    self.indentation + i * self.indentLength
+                    for i in range(-2, 2)
+                    if self.indentation + i * self.indentLength >= 0
+                ]
+                error = ErrorMessage(
+                    lineNumber,
+                    f"'{codeline.lineString}' has unexpected indentation!",
+                    f"Indentation: {codeline.indentation}   Expected: {expectation}",
+                )
+                ErrorTracker.addError(error)

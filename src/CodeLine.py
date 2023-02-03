@@ -54,14 +54,18 @@ class CodeLine:
 
     def hasContinuation(self):
 
-        rstrippedLine = self.lineString.rstrip()
-
         if self.isComment() or self.isEmpty():
             return False 
-        elif re.search('&', self.lineString): 
-            return True
-        else:
-            return False   
+        else: 
+            n_continuations = len(re.findall('&', self.lineString))
+
+            if re.search('^\s*&', self.lineString):
+                n_continuations = n_continuations - 1
+
+            if n_continuations >= 1: 
+                return True 
+            else:
+                return False
 
     def isEmpty(self):
         if len(self.lineString.strip()) == 0:
